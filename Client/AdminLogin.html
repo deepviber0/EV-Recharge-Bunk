@@ -125,6 +125,14 @@
             margin-top: 10px;
             font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
         }
+        #name{
+            height: 40px;
+            width:40px;
+            
+            padding-top: 10;
+            text-align: center;
+            margin: auto;
+        }
         @media (min-width: 555px) {
             .loader {
                 display: none;
@@ -136,6 +144,14 @@
                 animation: spin 0.8s linear infinite;
                 margin-left: 8px;
                 
+            }
+            #name{
+                height: 40px;
+                width:40px;
+                
+                padding-top: 10;
+                text-align: center;
+                margin: auto;
             }
         
             @keyframes spin {
@@ -185,7 +201,8 @@
 </head>
 <body>
     <div class="container">
-        
+            <img id="name" src="Images/fast-charge.png">
+
         <h2 id="heading">Welcome-Back Admin<p style="font-size:12px;">Admin_Login</p></h2>
         <img src="https://sales.webtel.in/images/Login-page-character1.png" alt="VectorImageAdminLoginForm">
         <form id="loginForm" method="POST">
