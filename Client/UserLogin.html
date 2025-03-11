@@ -127,7 +127,23 @@
             margin-top: 10px;
             font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
         }
+        #name{
+            height: 40px;
+            width:40px;
+            
+            padding-top: 10;
+            text-align: center;
+            margin: auto;
+        }
         @media (min-width: 555px) {
+            #name{
+                height: 40px;
+                width:40px;
+                
+                padding-top: 10;
+                text-align: center;
+                margin: auto;
+            }
             .loader {
                 display: none;
                 width: 16px;
@@ -187,7 +203,8 @@
 </head>
 <body>
     <div class="container">
-        
+            <img id="name" src="Images/fast-charge.png">
+
         <h2 id="heading">Welcome-Back User<p style="font-size:12px;">User_Login</p></h2>
         <img src="Images/usrlog.jpg" alt="VectorImageUserLogin">
         <form id="loginForm" method="POST">
