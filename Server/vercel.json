@@ -13,7 +13,7 @@
   "routes": [
     {
       "src": "/userlogin",
-      "dest": "/Client/userlogin"
+      "dest": "/Client/userlogin.html"
     },
     {
       "src": "/(.*)",
