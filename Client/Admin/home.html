@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+  </style>
+  <script>
+    function preventBack(){
+        window.history.forward();
+    }
+    setTimeout("preventBack()",0);
+    window.onunload=function(){null};
+    
+</script>
+
+<style>
+  body{
+    text-align: center; padding: 50px;background: linear-gradient(120deg, #0f172a, #1e293b); color: #c4f5f0;
+  }
+  .about-footer{
+    margin:30px;
+    
+  }
+  .about-footer a{
+    text-decoration: none;
+    color:antiquewhite
+  }
+</style>
+</head>
+
+<body>
+  <section id="home-admin">
+    <h1 style="font-size: 2.5em; margin-bottom: 10px; color: #4CAF50;">Welcome, Admin!</h1>
+    <p style="font-size: 1.2em; line-height: 1.6;">
+        Manage stations, monitor performance, and ensure EV users get the best experience.<br>
+        Keep the network updated and running smoothly — you’re in charge! 🚀
+    </p>
+
+    <div style="margin-top: 30px;">
+        <a href="Station.html" style="text-decoration: none; padding: 10px 20px; color: #fff; background-color: #4CAF50; border-radius: 5px; font-weight: bold; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);">
+            Create Stations
+        </a>
+        <a href="manage.html" style="text-decoration: none; padding: 10px 20px; color: #fff; background-color: #2196F3; border-radius: 5px; font-weight: bold; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); margin-left: 15px;">
+            View Stations
+        </a>
+    </div>
+    <div class="about-footer">
+      
+      <a href="https://www.linkedin.com/in/deepviber03shaikumar?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">Developed By...<br><hr>Shaik Umar Althaf</a>
+  </div>
+</section>
+</body>
+</html>

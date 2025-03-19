@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stations Search</title>
+    <style>
+        body{
+            background-color: #11192c;
+        }
+        body {
+            background-image: url('../Images/bgp.webp');
+           
+            background-repeat:no-repeat;
+            background-size: cover;
+            background-position: center;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Search bar styling */
+        #searchBar {
+            margin-bottom: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            width: 300px;
+            text-align: center;
+            border-radius: 20px;
+            border: 1px solid #4CAF50;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            font-size: 1em;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        /* Search bar hover effect */
+        #searchBar:focus {
+            box-shadow: 0 0 15px #4CAF50;
+        }
+
+        /* Station cards container */
+        #Stations {
+            width: 80%;
+            max-width: 600px;
+            padding-bottom: 20px;
+        }
+
+        /* Station card styling */
+        .slots {
+            margin-top: 14px;
+            border-radius: 22px;
+            padding: 14px;
+
+            transition: 0.3s ease;
+        }
+
+        /* Card hover effect */
+        .slots:hover {
+            transform: scale(1.05);
+        }
+
+        /* Status styling */
+        #status {
+            font-weight: bold;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        /* Active station styling */
+
+
+        /* Inactive station styling */
+
+
+        /* Map link styling */
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: #2e7d32;
+        }
+    </style>
+
+</head>
+
+<body onload="RetrieveData()">
+    <div>
+        <input type="text" id="searchBar" placeholder="🔍 Search By Location..." oninput="filterStations()"
+            style="margin-bottom: 10px; padding: 10px; width: 300px; text-align: center; border-radius: 20px; border: 1px solid #4CAF50; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); font-size: 1em; outline: none;">
+    </div>
+    <div id="Stations"></div>
+
+
+    <script>
+        let stationsData = [];
+
+        async function RetrieveData() {
+            try {
+                const response = await fetch("http://localhost:3000/user/rtvstations", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch data: ${response.status}`);
+                }
+
+                stationsData = await response.json();
+                stationsData.sort((a, b) => a.location.localeCompare(b.location));
+                renderStations(stationsData);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        function renderStations(data) {
+            const container = document.getElementById("Stations");
+            container.innerHTML = "";
+
+            if (data.length === 0) {
+                container.innerHTML = "<p style='color:white'>No Stations Available!</p>";
+                return;
+            }
+
+            data.forEach((station) => {
+                const dataDiv = document.createElement("div");
+                dataDiv.className = "slots";
+                dataDiv.innerHTML = `
+                     <strong><span id="ww">Station:</span></strong> ${station.name}<br>
+                      <strong><span id="ww">Location:</span></strong> ${station.location}<br>
+                     <strong><span id="we">Service Number:</span></strong><a href="tel:${station.tel}">${station.tel}</a><br>
+                     ${station.MapURL ? `<a href="${station.MapURL}" target="_blank" rel="noopener noreferrer">View on Map</a>` : `<span style="color: #da6ef5;">No map link available</span>`}<br>
+                     <strong>Slots:</strong> <span class="slots" id="slots-${station._id}" data-slots="${station.slots}">${station.slots}</span><br>
+                     <strong>Status:</strong><span id="status-${station._id}" data-status="${station.status}"> ${station.status}</span><br>
+                     <strong>Updated On:</strong> ${station.update}<hr>
+                `;
+
+                dataDiv.style.marginTop = "14px";
+                dataDiv.style.borderRadius = "22px";
+                dataDiv.style.padding = "14px";
+                dataDiv.style.border = "1px solid #ddd";
+                dataDiv.style.background = "#f4f4f4";
+
+                container.appendChild(dataDiv);
+                const Statusel = document.getElementById(`status-${station._id}`);
+                const Status = Statusel.getAttribute("data-status");
+
+                if (!(Status === "Active" || Status === "active")) {
+                    dataDiv.style.background = "#e8e1e1";
+                    Statusel.style.backgroundColor = "red";
+                    Statusel.style.width = "80px";
+                    Statusel.style.height = "30px";
+                    Statusel.style.color = "white";
+                    Statusel.style.textAlign = "center";
+                    Statusel.style.padding = "2px";
+                    Statusel.style.lineHeight = "30px";
+                }
+
+                const slotss = document.getElementById(`slots-${station._id}`).getAttribute("data-slots");
+                if ((slotss <= 3 && slotss > 0) && (Status === "Active" || Status === "active")) {
+                    dataDiv.style.background = "#f7766d";
+                } else if ((slotss <= 7 && slotss > 3) && (Status === "Active" || Status === "active")) {
+                    dataDiv.style.background = "#f1f584";
+                } else if ((Status === "Active" || Status === "active")) {
+                    dataDiv.style.background = "#86f7aa";
+                }
+            });
+        }
+
+        function filterStations() {
+            const query = document.getElementById("searchBar").value.toLowerCase();
+            const filteredData = stationsData.filter(station => station.location.toLowerCase().includes(query));
+            renderStations(filteredData);
+        }
+    </script>
+</body>
+
+</html>

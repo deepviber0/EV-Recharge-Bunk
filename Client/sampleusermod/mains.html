@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Charging Slot Dashboard</title>
+    <script>
+        function preventBack() {
+            window.history.forward();
+        }
+        setTimeout(preventBack, 0);
+        window.onunload = function () { null }; 
+    </script>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background: #f4f4f4;
+        }
+
+        .dashboard-container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            background: #2a2a2a;
+            color: #fff;
+            width: 250px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .sidebar nav a {
+            display: block;
+            padding: 10px 20px;
+            color: #ddd;
+            text-decoration: none;
+            margin-bottom: 10px;
+            width: 100%;
+            text-align: center;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .sidebar nav a:hover {
+            background: #4caf50;
+            color: #fff;
+        }
+
+        /* Main content styling */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #4caf50;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Slot availability grid */
+        .slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+            gap: 15px;
+        }
+
+
+
+
+
+
+
+        .slot:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+
+        hr {
+            border: none;
+            height: 2px;
+            background-color: #dd7c2c;
+            /* Green color */
+        }
+
+        #btn {
+            height: 30px;
+            width: 75px;
+            background-color: red;
+            color: #f4f4f4;
+        }
+
+
+
+        /* Mobile responsive tweaks */
+        @media (max-width: 600px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 10px;
+            }
+
+            .sidebar nav a {
+                padding: 5px;
+                font-size: 14px;
+            }
+
+            .main-content {
+                padding: 10px;
+            }
+
+            .slot {
+                padding: 10px;
+            }
+
+            .slots {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                padding: 10px;
+                border: 1px solid #ddd;
+                background: #f4f4f4;
+            }
+            .main-content section:target {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body onload="RetrieveData()">
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <h1>EV Dashboard</h1>
+            <nav>
+                <a href="#overview">Overview</a>
+                <a href="#Stations">Stations</a>
+                <a href="profile.html">Profile</a>
+                <a href="#logout" >LogOut</a>
+                <a href="#">About Us</a>
+            </nav>
+        </div>
+        <div class="main-content" name="mains">
+            <div id="overview" class="section">
+                <h2>Overview</h2>
+                <p>Welcome to the EV Charging Slot Booking Dashboard.</p>
+                <input type="button" id="btn" value="Logout" style="float: right;">
+                <script src="..//preventback.js"></script>
+            </div>
+            <div id="Stations" class="section">
+
+
+            </div>
+
+            <div id="Profile" class="section">
+
+            </div>
+            <div id="logout" class="sections">
+                <!-- <input type="button" class="btn" value="Logout" style="display: block; margin: 0 auto;"> -->
+
+            </div>
+           
+        </div>
+    </div>
+
+    <script>
+
+        document.getElementById("btn").addEventListener("click", () => {
+            alert("Logging Out...");
+            localStorage.removeItem("userUsername");
+        
+            // Redirect and clear history
+            window.location.href = "../UserLogin.html";
+            history.replaceState(null, null, "../UserLogin.html");
+        });
+        
+        // Prevent back after redirect
+        
+        
+
+
+        async function RetrieveData() {
+            const userUsername = localStorage.getItem("userUsername");
+            
+
+            console.log("Entered to func");
+            try {
+                const response = await fetch("http://localhost:3000/user/rtvstations", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch data: ${response.status}`);
+                }
+
+                const data = await response.json();
+                data.sort((a, b) => a.location.localeCompare(b.location));
+                const container = document.getElementById("Stations");
+                container.innerHTML = "";
+
+                if (data.length === 0) {
+                    container.innerHTML = "<p>No Stations Available!</p>";
+                }
+                data.forEach((station) => {
+                    const dataDiv = document.createElement("div");
+                    dataDiv.className = "slots";
+                    dataDiv.innerHTML = `
+                         <strong><span id="ww">Station:</span></strong> ${station.name}<br>
+    <strong>Location:</strong> ${station.location}<br>
+    ${station.MapURL
+                      ? `<a href="${station.MapURL}" target="_blank" rel="noopener noreferrer">View on Map</a>`
+                      : `<span style="color: red;">No map link available</span>`
+                      }<br> 
+        <strong>Slots:</strong> <span class="slots" id="slots-${station._id}" data-slots="${station.slots}">${station.slots}</span>
+    <strong>Status:</strong><span id="status-${station._id}" data-status="${station.status}"> ${station.status}</span><br>
+    <strong>Updated On:</strong> ${station.update}<hr>
+                        `;
+                    dataDiv.style.padding = "14px";
+                    dataDiv.style.border = "1px solid #ddd";
+                    dataDiv.style.background = "#f4f4f4";
+
+                    container.appendChild(dataDiv);
+                    const Statusel = document.getElementById(`status-${station._id}`)
+                    const Status = document.getElementById(`status-${station._id}`).getAttribute("data-status");
+                    console.log(Status)
+                    if (!(Status === "Active" || Status === "active")) {
+                        dataDiv.style.background = "#a1a09f";
+                        Statusel.style.backgroundColor = "red"
+                        Statusel.style.width = "80px"; // Set specific width
+                        Statusel.style.height = "30px";
+                        Statusel.style.color = "white"
+                        Statusel.style.textAlign = "center";
+                        Statusel.style.paddingBottom = 0;
+                        Statusel.style.lineHeight = "30px";
+
+                    }
+
+
+                    const slotss = document.getElementById(`slots-${station._id}`).getAttribute("data-slots")
+                    console.log(slotss);
+                    if ((slotss <= 3 && slotss > 0) && (Status === "Active" || Status === "active")) {
+                        dataDiv.style.background = "#f7766d";
+                    } else if ((slotss <= 7 && slotss > 3) && (Status === "Active" || Status === "active")) {
+                        dataDiv.style.background = "#f1f584";
+                    } else {
+                        if ((Status === "Active" || Status === "active"))
+                            dataDiv.style.background = "#86f7aa";
+
+                    }
+
+
+
+                });
+                console.log(data);
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+    </script>
+</body>
+
+</html>

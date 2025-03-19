@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    /* Background & Body Styling */
+    body {
+      background: linear-gradient(120deg, #0f172a, #1e293b);
+      font-family: 'Poppins', Arial, sans-serif;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Heading Styling */
+    h2 {
+      color: #4caf50;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    /* Form Container */
+    form {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+      width: 400px;
+      max-width: 100%;
+    }
+
+    /* Label Styling */
+    label {
+      color: #a5f3fc;
+      font-size: 1em;
+      text-align: left;
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    /* Input and Select Styling */
+    input,
+    select {
+      width: calc(100% - 16px);
+      margin-bottom: 15px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+      font-size: 1em;
+      background-color: #1e293b;
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    input:focus,
+    select:focus {
+      box-shadow: 0 0 8px #4caf50;
+    }
+
+    /* Button Styling */
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4caf50;
+      color: #fff;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
+    }
+
+    button:hover {
+      background-color: #3e8e41;
+      box-shadow: 0 0 15px rgba(76, 175, 80, 0.9);
+    }
+
+    /* Placeholder Styling */
+    ::placeholder {
+      color: #a5f3fc;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Create New Station</h2>
+  <form action="http://localhost:3000/admin/create-station" method="post">
+    <label>Station Name:</label>
+    <input type="text" name="name" placeholder="Station Name" required />
+
+    <label for="tel">Mobile Number:</label>
+    <input type="tel" id="tel" name="tel" placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" maxlength="10"
+      minlength="10" required>
+
+    <label>Location:</label>
+    <input type="text" name="location" placeholder="Location" required />
+
+    <label for="MapURL">Google Maps URL:</label>
+    <input type="url" id="MapURL" name="MapURL" placeholder="https://maps.google.com/..." required>
+
+    <label>Number of Slots:</label>
+    <input type="number" name="slots" placeholder="Number of Slots" required />
+
+    <label>Status:</label>
+    <select name="status" required>
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+    </select>
+
+    <label>Updated On:</label>
+    <input type="text" name="update" placeholder="DATE AND TIME IN 24HRS FORMAT!!" required />
+
+    <button type="submit">Create Station</button>
+  </form>
+</body>
+
+</html>

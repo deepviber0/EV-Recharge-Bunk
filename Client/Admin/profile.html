@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('../Images/bgp.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-left: 30px;
+            margin-top: 30px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 93vh;
+        }
+        
+        .profile-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+            width: 420px;
+            height: 160px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .profile-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #4caf50;
+            margin-right: 20px;
+        }
+        
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .profile-info h3 {
+            margin: 0;
+            color: #7fe1ca;
+            font-size: 1.4rem;
+        }
+        
+        .profile-info p {
+            margin: 5px 0;
+            color: #f7d8d8;
+            font-size: 0.9rem;
+        }
+        
+        .profile-info span {
+            font-weight: bold;
+            color: #f5dc37;
+        }
+        
+        #logout input {
+            display: block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #e63946;
+            color: #fff;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+        
+        #logout input:hover {
+            background-color: #d62828;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+        }
+        @media  (max-width:600px) {
+            .profile-card {
+               
+                width: 340px;
+                height: 130px;
+                
+            }
+            
+        }
+        </style>
+    
+</head>
+<body onload="profile()">
+    <script>
+        
+
+        async function profile() {
+            const Username=localStorage.getItem("AdminUsername")
+            try {
+                const response = await fetch(`
+                http://localhost:3000/admin/profiledata/${Username}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+    
+                if (!response.ok) throw new Error("Failed to fetch data!");
+                const data = await response.json();
+                console.log("Fetched Data:", data); // For debugging  
+                if (!data) {
+                    console.error("No user data received");
+                    return;
+                  }
+                // Create the profile card container
+                const dataDiv = document.createElement("div");
+                dataDiv.className = "profile-card";
+        
+                // Add profile image
+                const profileImg = document.createElement("img");
+                profileImg.src = "../Images/fast-charge.png";
+                profileImg.alt = "User Profile Picture";
+                dataDiv.appendChild(profileImg);
+        
+                // Create the inner div for user details
+                const dataDivs = document.createElement("div");
+                dataDivs.className = "profile-info";
+                dataDivs.innerHTML = `
+                    <h3><strong>${data.Name}</strong></h3>
+                    <p><span>Username:</span> ${data.Username}</p>
+                    <p><span>Email:</span> ${data.Mail}</p>
+                    <p><span>Mobile No:</span> +91 ${data.Phone}</p>
+                `;
+        
+                // Add a logout button
+                
+                // Append the info and logout to the main card
+                dataDiv.appendChild(dataDivs);
+                const logoutDiv = document.createElement("div");
+                logoutDiv.id = "logout";
+                logoutDiv.className = "sections";
+                logoutDiv.innerHTML = `
+                    <input type="button" class="btn" value="Logout" style="display: block; margin-top:146px; background-color:red; color:antiquewhite; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;" onclick="logout()">
+                `;
+        
+                dataDiv.appendChild(logoutDiv);
+        
+                // Finally, append everything to the body 
+                document.body.appendChild(dataDiv);
+        
+            } catch (error) {
+                console.error("Failed to fetch profile data:", error);
+            }
+        }
+        
+        // Logout function
+        function logout() {
+            alert("Logging Out...");
+            localStorage.removeItem("AdminUsername");
+            window.top.location.href = "../AdminLogin.html";
+            history.replaceState(null, null, "../AdminLogin.html");
+        }
+        
+    </script>
+</body>
+</html>

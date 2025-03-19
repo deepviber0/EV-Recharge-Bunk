@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Charging Slot Dashboard</title>
+
+    <script>
+        function preventBack(){
+            window.history.forward();
+        }
+        setTimeout("preventBack()",0);
+        window.onunload=function(){null};
+        
+    </script>
+</head>
+
+<frameset cols="250px,*">
+    <!-- Sidebar Navigation -->
+    <frame src="slidebar.html" name="sidebar" scrolling="no" noresize>
+
+    <!-- Main Content Area -->
+    <frame src="overview.html" name="main" scrolling="auto">
+</frameset>
+
+</html>

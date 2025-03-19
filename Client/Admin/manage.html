@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage</title>
+  <style>
+    /* Body Styling */
+    body {
+      background-color: #0f172a;
+      font-family: 'Poppins', Arial, sans-serif;
+      color: #eaf4fc;
+      padding: 20px;
+      margin: 0;
+    }
+
+    /* Container Styling */
+    #data-container div {
+      margin-bottom: 10px;
+      padding: 15px;
+      background: #1e293b;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    #data-container div:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Button Styling */
+    button {
+      margin-top: 5px;
+      padding: 8px 12px;
+      cursor: pointer;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    button:hover {
+      background: #3e8e41;
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
+    }
+
+    /* Form Styling */
+    form {
+      margin-top: 5px;
+      padding: 10px;
+      background: #0f172a;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      transition: 0.3s ease;
+    }
+
+    form input,
+    form select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 8px;
+      border: none;
+      border-radius: 5px;
+      background: #1e293b;
+      color: #eaf4fc;
+      outline: none;
+    }
+
+    form input:focus,
+    form select:focus {
+      box-shadow: 0 0 8px #4caf50;
+    }
+
+    form label {
+      font-weight: bold;
+      color: #a5f3fc;
+    }
+
+    a {
+      color: #4caf50;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: #4caf50;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="data-container"></div>
+
+  <!-- Script content remains unchanged -->
+  <script>
+    const admintrue = localStorage.getItem("adminUsername");
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/stations", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          const container = document.getElementById("data-container");
+          container.innerHTML = "";
+          data.forEach((station) => {
+            const dataDiv = document.createElement("div");
+            dataDiv.innerHTML = `
+                      <strong>Station:</strong> ${station.name}<br>
+                      <strong>Phone Number:</strong> ${station.tel}<br>
+                      <strong>Location:</strong> ${station.location}<br>
+                      <strong>MapURL:</strong> 
+                      ${station.MapURL
+                ? `<a href="${station.MapURL}" target="_blank" rel="noopener noreferrer">View on Map</a>`
+                : `<span style="color: red;">No map link available</span>`
+              }<br>    
+                      <strong>Slots:</strong> <span id="slots-${station._id}">${station.slots}</span><br>
+                      <strong>Status:</strong> <span id="status-${station._id}">${station.status}</span><br>
+                      <strong>Updated On:</strong> <span id="update-${station._id}">${station.update}</span><br>
+                      <button onclick="showUpdateForm('${station._id}', '${station.slots}', '${station.status}','${station.update}')">Update</button>
+                      <hr>
+                    `;
+
+            container.appendChild(dataDiv);
+          });
+
+        } else {
+          alert(data.message)
+        }
+
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    if (admintrue)
+      fetchData();
+    else { }
+
+    async function updateStation(id) {
+      const newSlots = document.getElementById(`newSlots-${id}`).value;
+      const newStatus = document.getElementById(`newStatus-${id}`).value;
+      const newupdate = document.getElementById(`newupdate-${id}`).value;
+
+      const response = await fetch(`http://localhost:3000/admin/update-station/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slots: newSlots, status: newStatus, update: newupdate }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Station updated successfully!");
+        fetchData(); // Refresh station data
+      } else {
+        alert(`Failed to update: ${data.message}`);
+      }
+    }
+
+    function showUpdateForm(id, slots, status, update) {
+      const dataDivs = document.getElementById(`slots-${id}`).parentElement;
+      dataDivs.innerHTML += `
+          <form onsubmit="updateStation('${id}'); return false;">
+            <label>Slots:</label>
+            <input type="number" id="newSlots-${id}" value="${slots}" /><br>
+            <label>Status:</label>
+            <select id="newStatus-${id}">
+              <option value="Active" ${status === "Active" ? "selected" : ""}>Active</option>
+              <option value="Inactive" ${status === "Inactive" ? "selected" : ""}>Inactive</option>
+            </select><br>
+            <label>Updated On:</label>
+            <input type="text" id="newupdate-${id}" value="${update}" /><br>
+            <button type="submit">Save</button>
+            <button type="button" onclick="fetchData()">Cancel</button>
+          </form>
+        `;
+    }
+  </script>
+</body>
+
+</html>
