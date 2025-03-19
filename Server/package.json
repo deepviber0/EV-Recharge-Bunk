@@ -1,9 +1,9 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "userlogin.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node userlogin.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
