@@ -5,7 +5,9 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000;
 const cors = require("cors")
-app.use(cors({ origin: "http://127.0.0.1:5500" }));
+app.use(cors({ 
+  origin: ["http://127.0.0.1:5500", "https://ev-recharge-bunk.vercel.app"] 
+}));
 
 app.use(express.json());
 
