@@ -258,7 +258,7 @@ app.post("/admin/create-station", async (req, res) => {
 
 //list
 
-app.get("/api/stations", async (req, res) => {
+app.get("/stations", async (req, res) => {
   try {
     const stations = await StationCreation.find({});
     res.json(stations);
