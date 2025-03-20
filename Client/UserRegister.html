@@ -292,7 +292,7 @@
             const mail=document.getElementById("mail").value;
             const names=document.getElementById("names").value;
             try {
-                const response = await fetch("http://localhost:3000/userreg", {
+                const response = await fetch("https://ev-recharge-bunk.vercel.app/userreg", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
