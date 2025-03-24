@@ -151,7 +151,9 @@
 
     if (admintrue)
       fetchData();
-    else { }
+    else {
+      alert("sorry session not found");
+    }
 
     async function updateStation(id) {
       const newSlots = document.getElementById(`newSlots-${id}`).value;
