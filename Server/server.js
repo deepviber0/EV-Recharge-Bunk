@@ -246,7 +246,7 @@ app.post("/admin/create-station", async (req, res) => {
     res.send(
       `<script>
          alert("Station Created Successfully!");
-         window.location.href = "/Admin/station.html";
+         window.location.href = "/Admin/Station.html";
        </script>`
     );  } catch (err) {
     console.error(err);
