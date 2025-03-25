@@ -5,7 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        
+        #spinner {
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid #4caf50;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: block;
+            margin: 20px auto;
+          }
+      
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+      
         
         body {
             font-family: 'Arial', sans-serif;
@@ -101,14 +116,20 @@
     
 </head>
 <body onload="profile()">
+
+    <div id="spinner"></div>
     <script>
         
 
+
         async function profile() {
+            const spinner = document.getElementById("spinner");
+
             const Username=localStorage.getItem("AdminUsername")
             try {
+                spinner.style.display = "block";
                 const response = await fetch(`
-                https://ev-recharge-bunk.vercel.app/admin/profiledata/${Username}`, {
+                http://localhost:3000/admin/profiledata/${Username}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
@@ -152,12 +173,13 @@
                 logoutDiv.innerHTML = `
                     <input type="button" class="btn" value="Logout" style="display: block; margin-top:146px; background-color:red; color:antiquewhite; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;" onclick="logout()">
                 `;
-        
+                spinner.style.display = "none";
+
                 dataDiv.appendChild(logoutDiv);
         
                 // Finally, append everything to the body 
                 document.body.appendChild(dataDiv);
-        
+
             } catch (error) {
                 console.error("Failed to fetch profile data:", error);
             }
