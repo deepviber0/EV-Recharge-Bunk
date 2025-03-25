@@ -28,12 +28,16 @@
   a {
     height:20px;
     width:200px;
-    margin:0 auto;
     display: block;
+
+
+    margin:0 auto;
+
     color: #fff;
+    padding: 10px 0;
+
     text-decoration: none;
     margin-bottom: 15px;
-    padding: 10px 0;
     background: rgba(76, 175, 80, 0.8);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
@@ -50,6 +54,8 @@
 
 /* Mobile layout adjustments */
 @media (min-width: 289px) {
+ /* Mobile layout adjustments */
+
   body {
     background: #11192c;
   }
@@ -62,13 +68,13 @@
     gap: 10px; /* Adds spacing between buttons */
   }
 
-  /* Adjust links for mobile style */
+  /* Ensure all links have the same width */
   a {
     display: flex;
     justify-content: space-between; /* Pushes text left and icon right */
     align-items: center;
-    width: auto; /* Allow the button to size dynamically */
-    padding: 12px 20px;
+    width: 130px; /* Consistent width for all buttons */
+    padding: 12px 10px;
     background: rgba(52, 202, 239, 0.8);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
@@ -77,6 +83,7 @@
     font-weight: bold;
     letter-spacing: 1px;
     margin-top: 19px;
+    text-align: left; /* Ensures text stays aligned nicely */
   }
 
   /* Mobile hover effect */
@@ -91,6 +98,8 @@
     text-align: center;
   }
 }
+
+
 
   </style>
 </head>
