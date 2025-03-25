@@ -119,11 +119,11 @@
   <script>
     const admintrue = localStorage.getItem("AdminUsername");
     const spinner = document.getElementById("spinner");
-
+spinner.style.display = "block";
     const fetchData = async () => {
       
       try {
-        spinner.style.display = "block";
+        
         const response = await fetch("https://ev-recharge-bunk.vercel.app/stt", {
           method: "GET",
           headers: {
@@ -173,6 +173,7 @@
     if (admintrue)
       fetchData();
     else {
+      spinner.style.display = "none";
       alert("SESSION EXPIRED,PLEASE LOGIN");
     }
 
