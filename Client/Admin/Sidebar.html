@@ -2,6 +2,7 @@
 <html>
 <head>
   <style>
+    /* Default body styling */
     body{
       background:#11192c;
     } 
@@ -46,40 +47,63 @@
     transform: scale(1.05);
     box-shadow: 0 0 15px #4caf50;
   }
-    
-    @media (max-width: 500px) {
-      body{
-        background:#11192c;
-      }
-      a {
-        display: block;
-        color: #fff;
-        text-decoration: none;
-        margin-bottom: 15px;
-        padding: 12px 0;
-        background: rgba(76, 175, 80, 0.8);
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-        transition: all 0.3s ease;
-        font-size: 18px;
-        font-weight: bold;
-        letter-spacing: 1px;
-      }
-      
-     
-    }
-    
+
+/* Mobile layout adjustments */
+@media (min-width: 289px) {
+  body {
+    background: #11192c;
+  }
+
+  /* Flex layout for the entire button container */
+  div {
+    display: flex;
+    flex-wrap: wrap; /* Wraps if the buttons don't fit */
+    justify-content: center; /* Centers the buttons horizontally */
+    gap: 10px; /* Adds spacing between buttons */
+  }
+
+  /* Adjust links for mobile style */
+  a {
+    display: flex;
+    justify-content: space-between; /* Pushes text left and icon right */
+    align-items: center;
+    width: auto; /* Allow the button to size dynamically */
+    padding: 12px 20px;
+    background: rgba(52, 202, 239, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    transition: all 0.3s ease;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: 19px;
+  }
+
+  /* Mobile hover effect */
+  a:hover {
+    background: rgba(56, 142, 60, 0.9);
+    transform: translateY(-2px);
+  }
+
+  /* Mobile heading styling */
+  h2 {
+    color: #fff;
+    text-align: center;
+  }
+}
+
   </style>
 </head>
 
 <body>
   <div>
     <h2>Admin Panel</h2>
-  <a href="home.html" target="main">Dashboard</a>
-  <a href="Station.html" target="main">Create Station</a>
-  <a href="manage.html" target="main">View Stations</a>
-  <a href="profile.html" target="main">Profile</a>
+    <a href="home.html" target="main"><span>Dashboard</span><span>🏠</span></a>
+    <a href="Station.html" target="main"><span>Create Station</span><span>➕</span></a>
+    <a href="manage.html" target="main"><span>View Stations</span><span>📍</span></a>
+    <a href="profile.html" target="main"><span>Profile</span><span>👤</span></a>
   </div>
+  
   
 
 </body>
