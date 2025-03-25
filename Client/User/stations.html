@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,6 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stations Search</title>
     <style>
+        #spinner {
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid #4caf50;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: block;
+            margin: 20px auto;
+          }
+      
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
         body{
             background-color: #11192c;
         }
@@ -94,6 +110,7 @@
 </head>
 
 <body onload="RetrieveData()">
+    <div id="spinner"></div>
     <div>
         <input type="text" id="searchBar" placeholder="🔍 Search By Location..." oninput="filterStations()"
             style="margin-bottom: 10px; padding: 10px; width: 300px; text-align: center; border-radius: 20px; border: 1px solid #4CAF50; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); font-size: 1em; outline: none;">
@@ -103,9 +120,11 @@
 
     <script>
         let stationsData = [];
+        const spinner=document.getElementById("spinner")
 
         async function RetrieveData() {
             try {
+                spinner.style.display="block"
                 const response = await fetch("https://ev-recharge-bunk.vercel.app/user/rtvstations", {
                     method: "GET",
                     headers: {
@@ -153,6 +172,7 @@
                 dataDiv.style.border = "1px solid #ddd";
                 dataDiv.style.background = "#f4f4f4";
 
+                spinner.style.display="none"
                 container.appendChild(dataDiv);
                 const Statusel = document.getElementById(`status-${station._id}`);
                 const Status = Statusel.getAttribute("data-status");
