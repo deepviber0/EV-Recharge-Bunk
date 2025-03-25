@@ -190,12 +190,7 @@
             history.replaceState(null, null, "../UserLogin.html");
         }
         
-         if (!Username) {
-                window.location.replace("/login.html");
-                window.history.pushState(null, null, window.location.href);
-                window.onpopstate = () => {
-                  window.location.replace("../UserLogin.html");
-                };
+         
     </script>
 </body>
 </html>
