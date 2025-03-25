@@ -115,7 +115,7 @@
         </style>
     
 </head>
-<body onload="profile()">
+<body >
     <div id="spinner"></div>
     <script>
         const Username=localStorage.getItem("userUsername")
@@ -181,7 +181,13 @@
                 console.error("Failed to fetch profile data:", error);
             }
         }
+        if(!Username) {
+
+            window.location.href="../UserLogin.html";
+} else{
+profile() ;
         
+                    }
         // Logout function
         function logout() {
             alert("Logging Out...");
