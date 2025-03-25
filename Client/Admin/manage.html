@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,10 +10,10 @@
       border: 6px solid rgba(255, 255, 255, 0.3);
       border-top: 6px solid #4caf50;
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
+      width: 30px;
+      height: 30px;
       animation: spin 1s linear infinite;
-      display: none;
+      display: block;
       margin: 20px auto;
     }
 
@@ -23,7 +21,7 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-
+    /* Body Styling */
     body {
       background-color: #0f172a;
       font-family: 'Poppins', Arial, sans-serif;
@@ -32,6 +30,7 @@
       margin: 0;
     }
 
+    /* Container Styling */
     #data-container div {
       margin-bottom: 10px;
       padding: 15px;
@@ -45,6 +44,7 @@
       transform: translateY(-5px);
     }
 
+    /* Button Styling */
     button {
       margin-top: 5px;
       padding: 8px 12px;
@@ -61,12 +61,14 @@
       box-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
     }
 
+    /* Form Styling */
     form {
       margin-top: 5px;
       padding: 10px;
       background: #0f172a;
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      transition: 0.3s ease;
     }
 
     form input,
@@ -113,68 +115,103 @@
   <div id="spinner"></div>
   <div id="data-container"></div>
 
+  <!-- Script content remains unchanged -->
   <script>
     const admintrue = localStorage.getItem("adminUsername");
     const spinner = document.getElementById("spinner");
-    const container = document.getElementById("data-container");
 
     const fetchData = async () => {
-      spinner.style.display = "block";
-      container.style.display = "none";
+      
       try {
-        const response = await fetch("https://ev-recharge-bunk.vercel.app/api/stations", {
+        spinner.style.display = "block";
+        const response = await fetch("https://ev-recharge-bunk.vercel.app/admin/stations", {
           method: "GET",
-          headers: { "Content-Type": "application/json" }
-        });
+          headers: {
+            "Content-Type": "application/json"
+          }
 
-        if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+        });
 
         const data = await response.json();
-        container.innerHTML = "";
 
-        data.forEach((station) => {
-          const dataDiv = document.createElement("div");
-          dataDiv.innerHTML = `
-            <strong>Station:</strong> ${station.name}<br>
-            <strong>Phone Number:</strong> ${station.tel}<br>
-            <strong>Location:</strong> ${station.location}<br>
-            <strong>MapURL:</strong> ${station.MapURL ? `<a href="${station.MapURL}" target="_blank">View on Map</a>` : `<span style="color: red;">No map link available</span>`}<br>
-            <strong>Slots:</strong> ${station.slots}<br>
-            <strong>Status:</strong> ${station.status}<br>
-            <strong>Updated On:</strong> ${station.update}<br>
-            <button onclick="showUpdateForm('${station._id}', '${station.slots}', '${station.status}', '${station.update}')">Update</button>
-            <hr>`;
-          container.appendChild(dataDiv);
-        });
+        if (response.ok) {
+          const container = document.getElementById("data-container");
+          container.innerHTML = "";
+          data.forEach((station) => {
+            const dataDiv = document.createElement("div");
+            dataDiv.innerHTML = `
+                      <strong>Station:</strong> ${station.name}<br>
+                      <strong>Phone Number:</strong> ${station.tel}<br>
+                      <strong>Location:</strong> ${station.location}<br>
+                      <strong>MapURL:</strong> 
+                      ${station.MapURL
+                ? `<a href="${station.MapURL}" target="_blank" rel="noopener noreferrer">View on Map</a>`
+                : `<span style="color: red;">No map link available</span>`
+              }<br>    
+                      <strong>Slots:</strong> <span id="slots-${station._id}">${station.slots}</span><br>
+                      <strong>Status:</strong> <span id="status-${station._id}">${station.status}</span><br>
+                      <strong>Updated On:</strong> <span id="update-${station._id}">${station.update}</span><br>
+                      <button onclick="showUpdateForm('${station._id}', '${station.slots}', '${station.status}','${station.update}')">Update</button>
+                      <hr>
+                    `;
 
-        container.style.display = "block";
+             spinner.style.display = "none";
+            container.appendChild(dataDiv);
+            
+
+          });
+
+        } else {
+          alert(data.message)
+        }
+
       } catch (e) {
-        console.error(e);
-        alert(`Failed to fetch data: ${e.message}`);
-      } finally {
-        spinner.style.display = "none";
+        console.log(e)
       }
-    };
+    }
 
-    if (admintrue) fetchData();
+    if (admintrue)
+      fetchData();
+    else { }
+
+    async function updateStation(id) {
+      const newSlots = document.getElementById(`newSlots-${id}`).value;
+      const newStatus = document.getElementById(`newStatus-${id}`).value;
+      const newupdate = document.getElementById(`newupdate-${id}`).value;
+
+      const response = await fetch(`https://ev-recharge-bunk.vercel.app/admin/update-station/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slots: newSlots, status: newStatus, update: newupdate }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Station updated successfully!");
+        fetchData(); // Refresh station data
+      } else {
+        alert(`Failed to update: ${data.message}`);
+      }
+    }
 
     function showUpdateForm(id, slots, status, update) {
-      const formHtml = `
-        <form onsubmit="updateStation('${id}'); return false;">
-          <label>Slots:</label>
-          <input type="number" id="newSlots-${id}" value="${slots}" /><br>
-          <label>Status:</label>
-          <select id="newStatus-${id}">
-            <option value="Active" ${status === "Active" ? "selected" : ""}>Active</option>
-            <option value="Inactive" ${status === "Inactive" ? "selected" : ""}>Inactive</option>
-          </select><br>
-          <label>Updated On:</label>
-          <input type="date" id="newupdate-${id}" value="${update}" /><br>
-          <button type="submit">Save</button>
-          <button type="button" onclick="fetchData()">Cancel</button>
-        </form>`;
-
-      document.getElementById("data-container").innerHTML += formHtml;
+      const dataDivs = document.getElementById(`slots-${id}`).parentElement;
+      dataDivs.innerHTML += `
+          <form onsubmit="updateStation('${id}'); return false;">
+            <label>Slots:</label>
+            <input type="number" id="newSlots-${id}" value="${slots}" /><br>
+            <label>Status:</label>
+            <select id="newStatus-${id}">
+              <option value="Active" ${status === "Active" ? "selected" : ""}>Active</option>
+              <option value="Inactive" ${status === "Inactive" ? "selected" : ""}>Inactive</option>
+            </select><br>
+            <label>Updated On:</label>
+            <input type="text" id="newupdate-${id}" value="${update}" /><br>
+            <button type="submit">Save</button>
+            <button type="button" onclick="fetchData()">Cancel</button>
+          </form>
+        `;
     }
   </script>
 </body>
