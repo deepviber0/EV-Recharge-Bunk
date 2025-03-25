@@ -115,13 +115,18 @@
         </style>
     
 </head>
-<body >
+<body onload="profile()">
     <div id="spinner"></div>
     <script>
         const Username=localStorage.getItem("userUsername")
         const spinner=document.getElementById("spinner")
         async function profile() {
           
+            if(!Username){
+            alert("Please Login First")
+            window.location.href="../UserLogin.html"
+        }
+            
             try {
                 spinner.style.display = "block";
 
@@ -181,13 +186,7 @@
                 console.error("Failed to fetch profile data:", error);
             }
         }
-        if(!Username) {
-
-            window.location.href="../UserLogin.html";
-} else{
-profile() ;
         
-                    }
         // Logout function
         function logout() {
             alert("Logging Out...");
