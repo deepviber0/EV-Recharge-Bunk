@@ -6,6 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage</title>
   <style>
+    #spinner {
+      border: 6px solid rgba(255, 255, 255, 0.3);
+      border-top: 6px solid #4caf50;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      display: block;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     /* Body Styling */
     body {
       background-color: #0f172a;
@@ -97,16 +112,19 @@
 </head>
 
 <body>
-
+  <div id="spinner"></div>
   <div id="data-container"></div>
 
   <!-- Script content remains unchanged -->
   <script>
-    const admintrue = localStorage.getItem("AdminUsername");
+    const admintrue = localStorage.getItem("adminUsername");
+    const spinner = document.getElementById("spinner");
 
     const fetchData = async () => {
+      
       try {
-        const response = await fetch("https://ev-recharge-bunk.vercel.app/stations", {
+        spinner.style.display = "block";
+        const response = await fetch("http://localhost:3000/api/stations", {
           method: "GET",
           headers: {
             "Content-Type": "application/json"
@@ -137,7 +155,10 @@
                       <hr>
                     `;
 
+             spinner.style.display = "none";
             container.appendChild(dataDiv);
+            
+
           });
 
         } else {
@@ -151,16 +172,14 @@
 
     if (admintrue)
       fetchData();
-    else {
-      alert("sorry session not found");
-    }
+    else { }
 
     async function updateStation(id) {
       const newSlots = document.getElementById(`newSlots-${id}`).value;
       const newStatus = document.getElementById(`newStatus-${id}`).value;
       const newupdate = document.getElementById(`newupdate-${id}`).value;
 
-      const response = await fetch(`https://ev-recharge-bunk.vercel.app/admin/update-station/${id}`, {
+      const response = await fetch(`http://localhost:3000/admin/update-station/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ slots: newSlots, status: newStatus, update: newupdate }),
