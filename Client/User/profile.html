@@ -121,6 +121,13 @@
         const Username=localStorage.getItem("userUsername")
         const spinner=document.getElementById("spinner")
         async function profile() {
+            if (!Username) {
+            window.location.replace("/login.html");
+            window.history.pushState(null, null, window.location.href);
+            window.onpopstate = () => {
+              window.location.replace("../UserLogin.html");
+            };
+          
             try {
                 spinner.style.display = "block";
 
@@ -178,6 +185,9 @@
         
             } catch (error) {
                 console.error("Failed to fetch profile data:", error);
+            }
+        }else{
+                        alert("SESSION EXPIRED! PLEASE LOGIN ");
             }
         }
         
