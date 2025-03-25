@@ -1,83 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <style>
-      body{
-        background:#11192c;
-      } 
-      body {
-        font-family: 'Arial', sans-serif;
-        
-        color: #ddd;
-        padding: 20px;
-        text-align: center;
-      }
-      
-      h2 {
-        color: #4caf50;
-        margin-bottom: 20px;
-        font-size: 28px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        border-bottom: 2px solid #4caf50;
-        display: inline-block;
-        padding-bottom: 5px;
-      }
-    
-    a {
-      height:20px;
-      width:200px;
-      margin:0 auto;
-      display: block;
-      color: #fff;
-      text-decoration: none;
-      margin-bottom: 15px;
-      padding: 10px 0;
-      background: rgba(76, 175, 80, 0.8);
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-      transition: all 0.3s ease;
-      font-size: 15px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-    a:hover {
-      background: rgba(76, 175, 80, 1);
-      transform: scale(1.05);
-      box-shadow: 0 0 15px #4caf50;
-    }
-      
-      @media (max-width: 500px) {
-        body{
-          background:#11192c;
-        }
-        a {
-          display: block;
-          color: #fff;
-          text-decoration: none;
-          margin-bottom: 15px;
-          padding: 12px 0;
-          background: rgba(76, 175, 80, 0.8);
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-          transition: all 0.3s ease;
-          font-size: 18px;
-          font-weight: bold;
-          letter-spacing: 1px;
-        }
-        
-       
-      }
-    </style>
-</head>
 
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Default body styling */
+    body{
+      background:#11192c;
+    } 
+    body {
+      font-family: 'Arial', sans-serif;
+      
+      color: #ddd;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    h2 {
+      color: #4caf50;
+      margin-bottom: 20px;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-bottom: 2px solid #4caf50;
+      display: inline-block;
+      padding-bottom: 5px;
+    }
+  
+  a {
+    height:20px;
+    width:200px;
+    display: block;
+
+
+    margin:0 auto;
+
+    color: #fff;
+    padding: 10px 0;
+
+    text-decoration: none;
+    margin-bottom: 15px;
+    background: rgba(76, 175, 80, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    transition: all 0.3s ease;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  a:hover {
+    background: rgba(76, 175, 80, 1);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #4caf50;
+  }
+
+/* Mobile layout adjustments */
+@media (min-width: 289px) {
+ /* Mobile layout adjustments */
+
+  body {
+    background: #11192c;
+  }
+
+  /* Flex layout for the entire button container */
+  div {
+    display: flex;
+    flex-wrap: wrap; /* Wraps if the buttons don't fit */
+    justify-content: center; /* Centers the buttons horizontally */
+    gap: 10px; /* Adds spacing between buttons */
+  }
+
+  /* Ensure all links have the same width */
+  a {
+    display: flex;
+    justify-content: space-between; /* Pushes text left and icon right */
+    align-items: center;
+    width: 130px; /* Consistent width for all buttons */
+    padding: 12px 10px;
+    background: rgba(82, 233, 205, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    transition: all 0.3s ease;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: 19px;
+    text-align: left; /* Ensures text stays aligned nicely */
+  }
+
+  /* Mobile hover effect */
+  a:hover {
+    background: rgba(56, 142, 60, 0.9);
+    transform: translateY(-2px);
+  }
+
+  /* Mobile heading styling */
+  h2 {
+    color: #fff;
+    text-align: center;
+  }
+}
+
+
+
+  </style>
+</head>
 <body>
-    <h1>EV Dashboard</h1>
-    <nav>
-        <a href="overview.html" target="main">Overview</a>
-        <a href="stations.html" target="main">Stations</a>
-        <a href="profile.html" target="main">Profile</a>
-        <a href="about.html" target="main">About Us</a>
-    </nav>
+<div>
+  <h2>User Panel</h2>
+  <a href="overview.html" target="main"><span>Overview</span><span>📊</span></a>
+  <a href="stations.html" target="main"><span>Stations</span><span>🚉</span></a>
+  <a href="profile.html" target="main"><span>Profile</span><span>👤</span></a>
+  <a href="about.html" target="main"><span>About Us</span><span>ℹ️</span></a>
+</div>
 </body>
+
 </html>
