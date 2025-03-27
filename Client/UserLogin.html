@@ -10,6 +10,21 @@
         
     </script>
     <style>
+        #spinner {
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid #4caf50;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 20px auto;
+          }
+      
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
          *{
             background: transparent;
         }
@@ -221,6 +236,8 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="pass" placeholder="********" maxlength="8" required>
             </div>
+                        <div id="spinner"></div>
+
            
             <div class="form-group">
                 <button type="submit" id="submit">Login</button>
@@ -239,9 +256,12 @@
      <script>
         document.getElementById("loginForm").addEventListener("submit", async(event) => {
             event.preventDefault();
+            const spinner=document.getElementById("spinner")
+
             const pass = document.getElementById("password").value;
             const uname = document.getElementById("username").value;
             try {
+                spinner.style.display = "block";
                 const response = await fetch("https://ev-recharge-bunk.vercel.app/userlogin", {
                     method: "POST",
                     headers: {
@@ -263,6 +283,7 @@
                 if (response.ok) {
                 document.getElementById("username").value = "";
                 document.getElementById("password").value = "";
+                    spinner.style.display = "none";
                 alert(`${uname} Logged Successfully`);
                 window.location.href="User/mains2.html";
                 }else{CSSCounterStyleRule
