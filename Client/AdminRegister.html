@@ -332,9 +332,9 @@
                 });
         
                 const data = await response.json();
-        
+         localStorage.setItem("AdminUsername",data.username)
                 if (response.ok) {
-                    localStorage.setItem("AdminUsername",data.username)
+                   
                 document.getElementById("username").value = "";
                 document.getElementById("password").value = "";
                 document.getElementById("tel").value = "";
